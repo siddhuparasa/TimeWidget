@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock</title>
+    <link rel="stylesheet" href="time.css">
+    <link rel="stylesheet" href="./stopwatch.html">
+    <link rel="stylesheet" href="./timer.html">
+    <link rel="stylesheet" href="./worldclock.html">
+    
+    <style>
+        a {
+            text-decoration: none;
+            color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <nav>
+            <ul> 
+                <li><button><a href="./index.html">CLOCK</a></button></li>
+                <li><button><a href="./worldclock.html">WORLD CLOCKS</a></button></li>
+                <li><button><a href="./stopwatch.html">STOP WATCH</a></button></li>
+                <li><button><a href="./timer.html">TIMER</a></button></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="iphone-wrapper">
+        <div class="iphone">
+            <div class="top-bar"></div>
+            <div class="app-container">
+                <!-- Clock Section -->
+                <div class="section">
+                    <div class="section-title">Clock</div>
+                    <div class="section-content">
+                        <div class="clock">
+                            <div id="clockDisplay" class="clock__display">12:00:00</div>
+                        </div>
+                    </div>
+                    <img src="images/lion.webp" class="lion-image" alt="Clock Image">
+                </div>
+
+                <!-- Additional sections for World Clocks, Alarms, Stopwatch if required -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+
+            // Local time
+            const localTime = now.toLocaleTimeString();
+            document.getElementById('clockDisplay').textContent = localTime;
+
+            // New York time (GMT-4)
+            const newYorkTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+            document.getElementById('newYorkTime').textContent = newYorkTime.toLocaleTimeString();
+
+            // London time (GMT+1)
+            const londonTime = new Date().toLocaleTimeString('en-GB', { timeZone: 'Europe/London' });
+            document.getElementById('londonTime').textContent = londonTime;
+
+            // Tokyo time (GMT+9)
+            const tokyoTime = new Date(now.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' }));
+            document.getElementById('tokyoTime').textContent = tokyoTime.toLocaleTimeString();
+        }
+
+        setInterval(updateClock, 1000); // Update every second
+        updateClock(); // Initial call
+
+        let stopwatchInterval;
+        let stopwatchTime = 0;
+        const stopwatchDisplay = document.getElementById('stopwatchDisplay');
+        const lapTimes = document.getElementById('lapTimes');
+
+        function formatTime(time) {
+            const hours = String(Math.floor(time / 3600)).padStart(2, '0');
+            const minutes = String(Math.floor((time % 3600) / 60)).padStart(2, '0');
+            const seconds = String(time % 60).padStart(2, '0');
+            return `${hours}:${minutes}:${seconds}`;
+        }
+
+        function updateStopwatch() {
+            stopwatchTime++;
+            stopwatchDisplay.textContent = formatTime(stopwatchTime);
+        }
+
+        document.getElementById('startStopwatch').addEventListener('click', function () {
+            if (!stopwatchInterval) {
+                stopwatchInterval = setInterval(updateStopwatch, 1000);
+                this.textContent = 'Stop';
+            } else {
+                clearInterval(stopwatchInterval);
+                stopwatchInterval = null;
+                this.textContent = 'Start';
+            }
+        });
+
+        document.getElementById('lapStopwatch').addEventListener('click', function () {
+            if (stopwatchInterval) {
+                const lapTime = document.createElement('div');
+                lapTime.className = 'lap-times__item';
+                lapTime.textContent = `Lap ${lapTimes.children.length + 1}: ${formatTime(stopwatchTime)}`;
+                lapTimes.appendChild(lapTime);
+            }
+        });
+
+        document.getElementById('resetStopwatch').addEventListener('click', function () {
+            clearInterval(stopwatchInterval);
+            stopwatchInterval = null;
+            stopwatchTime = 0;
+            stopwatchDisplay.textContent = formatTime(stopwatchTime);
+            lapTimes.innerHTML = '';
+            document.getElementById('startStopwatch').textContent = 'Start';
+        });
+    </script>
+</body>
+</html>

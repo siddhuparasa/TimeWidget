@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+    <link rel="stylesheet" href="iphone.css">
+    <link rel="stylesheet" href="./stop_watch.html">
+    <link rel="stylesheet" href="./timer.html">
+    <link rel="stylesheet" href="./world_clock.html">
+    
+    <nav>
+        <ul>
+            <li><button><a href="./index.html">CLOCK</a></button></li>
+                <li><button><a href="./worldclock.html">WORLD CLOCKS</a></button></li>
+                <li><button><a href="./stopwatch.html">STOP WATCH</a></button></li>
+                <li><button><a href="./timer.html">TIMER</a></button></li>
+        </ul>
+    </nav>
+    
+    <link rel="stylesheet" href="iphone.css">
+</head>
+
+<style>
+    nav ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    a {
+        text-decoration: none;
+        color: yellow;
+    }
+
+    nav ul li {
+        margin-right: 10px;
+    }
+
+    nav ul li button {
+        background-color: #4c5eaf;
+        color: rgb(0, 0, 0);
+        padding: 10px 20px;
+        text-align: center;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    nav ul li button:hover {
+        background-color: #45a048;
+    }
+
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(135deg, #3a494b, #ffffff);
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #000000;
+    }
+
+    .iphone-wrapper {
+        perspective: 1000px;
+    }
+
+    .iphone {
+        width: 400px;
+        height: 668px;
+        background: #000000;
+        color: #7ea51c;
+        border-radius: 40px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+    }
+
+    .iphone:hover {
+        transform: rotateY(-10deg);
+    }
+
+    .top-bar {
+        height: 20px;
+        background: #0f9bca;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .app-container {
+        flex-grow: 1;
+        padding: 20px;
+        background-color: #000000;
+    }
+
+    .section {
+        margin-bottom: 20px;
+    }
+
+    .section-title {
+        font-size: 20px;
+        margin-bottom: 10px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .section-content {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .timer-input {
+        margin-bottom: 10px;
+    }
+
+    input[type="number"] {
+        padding: 5px;
+        width: 80px;
+        font-size: 16px;
+    }
+
+    .set-timer-btn {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #4c5eaf;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .set-timer-btn:hover {
+        background-color: #45a048;
+    }
+
+    .timer-display {
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+</style>
+
+<body>
+    <div class="iphone-wrapper">
+        <div class="iphone">
+            <div class="top-bar">iPhone</div>
+            <div class="app-container">
+                <div class="section">
+                    <div class="section-title">Set Timer</div>
+                    <div class="section-content">
+                        <!-- Timer Input -->
+                        <div class="timer-input">
+                            <label for="minutes">Minutes:</label>
+                            <input type="number" id="minutes" min="0" placeholder="0">
+                            <label for="seconds">Seconds:</label>
+                            <input type="number" id="seconds" min="0" max="59" placeholder="0">
+                        </div>
+                        <!-- Set Timer Button -->
+                        <button class="set-timer-btn" onclick="startTimer()">Set Timer</button>
+
+                        <!-- Timer Display -->
+                        <div class="timer-display" id="timerDisplay">00:00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let timer;
+        let timeRemaining;
+
+        // Function to start the timer
+        function startTimer() {
+            const minutes = parseInt(document.getElementById('minutes').value) || 0;
+            const seconds = parseInt(document.getElementById('seconds').value) || 0;
+            timeRemaining = (minutes * 60) + seconds;
+
+            if (timeRemaining > 0) {
+                displayTime();
+                timer = setInterval(countdown, 1000);
+            }
+        }
+
+        // Countdown function
+        function countdown() {
+            if (timeRemaining <= 0) {
+                clearInterval(timer);
+                alert('Wake up!');
+            } else {
+                timeRemaining--;
+                displayTime();
+            }
+        }
+
+        // Function to display time in MM:SS format
+        function displayTime() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            document.getElementById('timerDisplay').textContent =
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+    </script>
+</body>
+</html>

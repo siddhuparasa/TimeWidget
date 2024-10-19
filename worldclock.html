@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Clock</title>
+    <link rel="stylesheet" href="time.css">
+    <link rel="stylesheet" href="./stopwatch.html">
+    <link rel="stylesheet" href="./timer.html">
+    <link rel="stylesheet" href="./worldclock.html">
+    
+    <div>
+        <nav>
+            <ul>
+                <li><button><a href="./index.html">CLOCK</a></button></li>
+                <li><button><a href="./worldclock.html">WORLD CLOCKS</a></button></li>
+                <li><button><a href="./stopwatch.html">STOP WATCH</a></button></li>
+                <li><button><a href="./timer.html">TIMER</a></button></li>
+            </ul>
+        </nav>
+    </div>
+
+    <style>
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex; 
+        }
+
+        a {
+            text-decoration: none;
+            color: yellow;
+        }
+
+        nav ul li {
+            margin-right: 10px;
+        }
+
+        nav ul li button {
+            background-color: #4c5eaf;
+            color: rgb(0, 0, 0);
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav ul li button:hover {
+            background-color: #45a048;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #3a494b, #ffffff);
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #000000;
+        }
+
+        .iphone-wrapper {
+            perspective: 1000px;
+        }
+
+        .iphone {
+            width: 400px;
+            height: 668px;
+            background: #000000;
+            color: #7ea51c;
+            border-radius: 40px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+
+        .iphone:hover {
+            transform: rotateY(-10deg);
+        }
+
+        .top-bar {
+            height: 20px;
+            background: #0f9bca;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .app-container {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #000000;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .section-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .world-clock {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #1c1c1e;
+            border-radius: 10px;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .clock-image {
+            width: 50px;
+            height: 50px;
+        }
+
+        .world-clock__label {
+            flex-grow: 1;
+            margin-left: 10px;
+            font-size: 18px;
+        }
+
+        .world-clock__time {
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="iphone-wrapper">
+        <div class="iphone">
+            <div class="top-bar"></div>
+            <div class="app-container">
+                <div class="section">
+                    <div class="section-title">World Clocks</div>
+                    <div class="section-content world-clocks">
+                        <div class="world-clock">
+                            <img src="images/newyork.webp" class="clock-image" alt="Clock Image">
+                            <div class="world-clock__label">New York</div>
+                            <div id="newYorkTime" class="world-clock__time">--:--:--</div>
+                        </div>
+                        <div class="world-clock">
+                            <img src="images/london.webp" class="clock-image" alt="Clock Image">
+                            <div class="world-clock__label">London</div>
+                            <div id="londonTime" class="world-clock__time">--:--:--</div>
+                        </div>
+                        <div class="world-clock">
+                            <img src="images/tokyo.jpeg" class="clock-image" alt="Clock Image">
+                            <div class="world-clock__label">Tokyo</div>
+                            <div id="tokyoTime" class="world-clock__time">--:--:--</div>
+                        </div>
+                        <div class="world-clock">
+                            <img src="images/sydney.jpeg" class="clock-image" alt="Clock Image">
+                            <div class="world-clock__label">Sydney</div>
+                            <div id="sydneyTime" class="world-clock__time">--:--:--</div>
+                        </div>
+                        <div class="world-clock">
+                            <img src="images/dubai.jpg" class="clock-image" alt="Clock Image">
+                            <div class="world-clock__label">Dubai</div>
+                            <div id="dubaiTime" class="world-clock__time">--:--:--</div>
+                        </div>
+                        <div class="world-clock">
+                            <img src="images/toronto.jpeg" class="clock-image" alt="Clock Image">
+                            <div class="world-clock__label">Toronto</div>
+                            <div id="torontoTime" class="world-clock__time">--:--:--</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+
+            // New York time (GMT-4)
+            const newYorkTime = new Intl.DateTimeFormat('en-US', {
+                timeZone: 'America/New_York',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            }).format(now);
+            document.getElementById('newYorkTime').textContent = newYorkTime;
+
+            // London time (GMT+1)
+            const londonTime = new Intl.DateTimeFormat('en-GB', {
+                timeZone: 'Europe/London',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            }).format(now);
+            document.getElementById('londonTime').textContent = londonTime;
+
+            // Tokyo time (GMT+9)
+            const tokyoTime = new Intl.DateTimeFormat('ja-JP', {
+                timeZone: 'Asia/Tokyo',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            }).format(now);
+            document.getElementById('tokyoTime').textContent = tokyoTime;
+
+            // Sydney time (GMT+10)
+            const sydneyTime = new Intl.DateTimeFormat('en-AU', {
+                timeZone: 'Australia/Sydney',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            }).format(now);
+            document.getElementById('sydneyTime').textContent = sydneyTime;
+
+            // Dubai time (GMT+4)
+            const dubaiTime = new Intl.DateTimeFormat('en-GB', {
+                timeZone: 'Asia/Dubai',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            }).format(now);
+            document.getElementById('dubaiTime').textContent = dubaiTime;
+
+            // Toronto time (GMT-4)
+            const torontoTime = new Intl.DateTimeFormat('en-CA', {
+                timeZone: 'America/Toronto',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            }).format(now);
+            document.getElementById('torontoTime').textContent = torontoTime;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+</body>
+</html>
