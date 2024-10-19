@@ -139,7 +139,7 @@ nav ul li button:hover {
         }
         .lion-image:hover {
             transform: scale(1.1);
-        
+        }
 
         .world-clocks {
             display: flex;
@@ -285,4 +285,3 @@ nav ul li button:hover {
         .search-button:hover {
             background-color: #546e7a;
         }
-    i
